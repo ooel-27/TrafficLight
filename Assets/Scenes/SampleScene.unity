@@ -671,12 +671,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de10bdbeaa645c84695b9ab6fb15b9ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  greenLight: {fileID: 878502659}
-  yellowLight: {fileID: 1292314020}
-  redLight: {fileID: 2126756237}
-  green: {r: 0.15770023, g: 0.78113204, b: 0.16752265, a: 0}
-  yellow: {r: 0.7660377, g: 0.6564288, b: 0.11996433, a: 0}
-  red: {r: 1, g: 0.14108638, b: 0, a: 0}
+  greenObj: {fileID: 878502659}
+  yellowObj: {fileID: 1292314020}
+  redObj: {fileID: 2126756237}
+  greenColor: {r: 0.12958288, g: 1, b: 0, a: 0}
+  yellowColor: {r: 0.90943396, g: 0.6879294, b: 0.08064787, a: 0}
+  redColor: {r: 1, g: 0, b: 0, a: 0}
 --- !u!4 &1036069831
 Transform:
   m_ObjectHideFlags: 0

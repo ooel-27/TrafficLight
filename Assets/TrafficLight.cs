@@ -1,50 +1,50 @@
 using UnityEngine;
+using System.Collections;
 
 public class TrafficController : MonoBehaviour
 {
-    [SerializeField] GameObject greenLight, yellowLight, redLight;
+    [SerializeField] GameObject greenObj, yellowObj, redObj;
     MeshRenderer greenRenderer, yellowRenderer, redRenderer;
 
-    [SerializeField] Color green, yellow, red;
-
-    void Awake()
-    {
-        greenRenderer = greenLight.GetComponent<MeshRenderer>();
-        yellowRenderer = yellowLight.GetComponent<MeshRenderer>();
-        redRenderer = redLight.GetComponent<MeshRenderer>();
-    }
+    [SerializeField] Color greenColor, yellowColor, redColor;
 
     void Start()
     {
-        InvokeRepeating(nameof(SwitchToGreen), 0f, 12f);
-        Invoke(nameof(SwitchToYellow), 5f);
-        Invoke(nameof(SwitchToRed), 7f);
+        greenRenderer = greenObj.GetComponent<MeshRenderer>();
+        yellowRenderer = yellowObj.GetComponent<MeshRenderer>();
+        redRenderer = redObj.GetComponent<MeshRenderer>();
+
+        StartCoroutine(LightCycle());
     }
 
-    void SwitchToGreen()
+    IEnumerator LightCycle()
     {
-        SetLight(greenRenderer, green, 5f);
-        SetLight(yellowRenderer, yellow * 0.2f, 0f);
-        SetLight(redRenderer, red * 0.2f, 0f);
+        Color dimGreen = greenColor * 0.2f;
+        Color dimYellow = yellowColor * 0.2f;
+        Color dimRed = redColor * 0.2f;
+
+        while (true)
+        {
+            ApplyLight(greenRenderer, greenColor, 5f);
+            ApplyLight(yellowRenderer, dimYellow, 0f);
+            ApplyLight(redRenderer, dimRed, 0f);
+            yield return new WaitForSeconds(5f);
+
+            ApplyLight(greenRenderer, dimGreen, 0f);
+            ApplyLight(yellowRenderer, yellowColor, 5f);
+            ApplyLight(redRenderer, dimRed, 0f);
+            yield return new WaitForSeconds(2f);
+
+            ApplyLight(greenRenderer, dimGreen, 0f);
+            ApplyLight(yellowRenderer, dimYellow, 0f);
+            ApplyLight(redRenderer, redColor, 5f);
+            yield return new WaitForSeconds(5f);
+        }
     }
 
-    void SwitchToYellow()
+    void ApplyLight(MeshRenderer rend, Color col, float emission)
     {
-        SetLight(greenRenderer, green * 0.2f, 0f);
-        SetLight(yellowRenderer, yellow, 5f);
-        SetLight(redRenderer, red * 0.2f, 0f);
-    }
-
-    void SwitchToRed()
-    {
-        SetLight(greenRenderer, green * 0.2f, 0f);
-        SetLight(yellowRenderer, yellow * 0.2f, 0f);
-        SetLight(redRenderer, red, 5f);
-    }
-
-    void SetLight(MeshRenderer renderer, Color baseColor, float emissionMultiplier)
-    {
-        renderer.material.color = baseColor;
-        renderer.material.SetColor("_EmissionColor", baseColor * emissionMultiplier);
+        rend.material.color = col;
+        rend.material.SetColor("_EmissionColor", col * emission);
     }
 }
